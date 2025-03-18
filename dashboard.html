@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-image: url(images/bakgraond.jpeg);
+            background-size: cover;
+        }
+        .navbar {
+            background-color: #2575fc;
+        }
+        .navbar-brand {
+            color: #fff !important;
+            font-weight: bold;
+        }
+        .nav-link {
+            color: #fff !important;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #2575fc;
+            color: #fff;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #2575fc;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #1a5bbf;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Budget Management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="income-expenses.html">Income & Expenses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="goals.html">Goals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="debts.html">Debts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="transactions.html">Transactions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">Income</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="income">0 SAR</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">Expenses</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="expenses">0 SAR</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">Balance</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="balance">0 SAR</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Charts</div>
+                    <div class="card-body">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        const income = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + t.amount, 0);
+        const expenses = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + t.amount, 0);
+        const balance = income - expenses;
+
+        document.getElementById('income').textContent = `${income} SAR`;
+        document.getElementById('expenses').textContent = `${expenses} SAR`;
+        document.getElementById('balance').textContent = `${balance} SAR`;
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Income', 'Expenses', 'Balance'],
+                datasets: [{
+                    label: 'Amount',
+                    data: [income, expenses, balance],
+                    backgroundColor: ['#28a745', '#dc3545', '#007bff'],
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

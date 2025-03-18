@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-image: url(images/ba.2.jpeg);
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px; /* زودنا العرض ليستوعب الصورة */
+            display: flex;
+            align-items: center;
+        }
+        .login-image {
+            max-width: 50%; /* تحكم في حجم الصورة */
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+        .login-form {
+            flex: 1; /* اجعل الفورم يأخذ المساحة المتبقية */
+        }
+        .btn-primary {
+            background-color: #2575fc;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #1a5bbf;
+        }
+        .text-center a {
+            color: #2575fc;
+            text-decoration: none;
+        }
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="images/b2.jpeg" alt="Login Illustration" class="login-image">
+        <div class="login-form">
+            <h2 class="text-center">Login</h2>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p class="text-center mt-3">Don't have an account? <a href="signup.html">Sign up</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                alert('Login successful!');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Incorrect email or password!');
+            }
+        });
+    </script>
+</body>
+</html>
